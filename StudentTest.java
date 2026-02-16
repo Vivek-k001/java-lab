@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class Student {
 
     int rollNo;
@@ -15,23 +17,38 @@ class Student {
 public class StudentTest {
     public static void main(String[] args) {
 
+        Scanner sc = new Scanner(System.in);
+
         Student s1 = new Student();
-        s1.rollNo = 1;
-        s1.name = "Rahul";
-        s1.marks = 75;
-
         Student s2 = new Student();
-        s2.rollNo = 2;
-        s2.name = "Anu";
-        s2.marks = 35;
-
         Student s3 = new Student();
-        s3.rollNo = 3;
-        s3.name = "Vikram";
-        s3.marks = 50;
 
+        // Student 1
+        System.out.println("Enter details of Student 1:");
+        s1.rollNo = sc.nextInt();
+        sc.nextLine(); // consume leftover newline
+        s1.name = sc.nextLine();
+        s1.marks = sc.nextInt();
+
+        // Student 2
+        System.out.println("Enter details of Student 2:");
+        s2.rollNo = sc.nextInt();
+        sc.nextLine();
+        s2.name = sc.nextLine();
+        s2.marks = sc.nextInt();
+
+        // Student 3
+        System.out.println("Enter details of Student 3:");
+        s3.rollNo = sc.nextInt();
+        sc.nextLine();
+        s3.name = sc.nextLine();
+        s3.marks = sc.nextInt();
+
+        // Check eligibility
         s1.checkEligibility();
         s2.checkEligibility();
         s3.checkEligibility();
+
+        sc.close();
     }
 }
