@@ -1,33 +1,45 @@
-DELIMITER //
+CREATE TABLE Emp_salary (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    no_of_working_days INT,
+    designation VARCHAR(50),
+    salary DOUBLE
+);
+
+
+
+
+DELIMITER $$
 
 CREATE PROCEDURE calculate_salary()
 BEGIN
+    -- Variable declarations
     DECLARE done INT DEFAULT 0;
-
     DECLARE v_emp_id INT;
-    DECLARE v_emp_name VARCHAR(50);
     DECLARE v_days INT;
     DECLARE v_designation VARCHAR(50);
-    DECLARE v_salary INT;
+    DECLARE v_salary DOUBLE;
 
-    -- Cursor
+    -- Cursor declaration
     DECLARE emp_cursor CURSOR FOR
-        SELECT emp_id, emp_name, no_of_working_days, designation
-        FROM emp_salary;
+        SELECT emp_id, no_of_working_days, designation
+        FROM Emp_salary;
 
+    -- Handler for end of cursor
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
+    -- Open cursor
     OPEN emp_cursor;
 
     read_loop: LOOP
-        FETCH emp_cursor INTO v_emp_id, v_emp_name, v_days, v_designation;
+        FETCH emp_cursor INTO v_emp_id, v_days, v_designation;
 
         IF done THEN
             LEAVE read_loop;
         END IF;
 
         -- Salary calculation based on designation
-        IF v_designation = 'Assistance Professor' THEN
+        IF v_designation = 'Assistant Professor' THEN
             SET v_salary = v_days * 1750;
         ELSEIF v_designation = 'Clerk' THEN
             SET v_salary = v_days * 750;
@@ -38,13 +50,22 @@ BEGIN
         END IF;
 
         -- Update salary in table
-        UPDATE emp_salary
+        UPDATE Emp_salary
         SET salary = v_salary
         WHERE emp_id = v_emp_id;
 
     END LOOP;
 
+    -- Close cursor
     CLOSE emp_cursor;
-END //
+
+END$$
 
 DELIMITER ;
+
+
+
+
+
+
+CALL calculate_salary();
